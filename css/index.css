@@ -1,0 +1,83 @@
+body {
+	font-family: arial;
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: flex-start;
+	align-items: stretch;
+}
+
+ul {
+	list-style : none;
+	padding : 0px;
+	margin: 0px;
+}
+
+label, button, textarea, input {
+	display: block;
+}
+
+textarea {
+	width: 100%;
+	height: 250px;
+	font-family: arial;
+}
+
+input[type='text']{
+	width: 1000px;
+}
+
+button, select {
+	margin: 0px;
+}
+
+.dragover {
+	outline: 1px solid green;
+}
+
+.function {
+	height: 100px;
+}
+
+.button-section {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: flex-start;
+	align-items: center;
+	margin-bottom: 15px;
+}
+.button-section #transform {
+	flex-grow: 1;
+}
+.button-section #add-step {
+	flex-grow: 1;
+}
+.save-section {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: flex-start;
+	align-items: center;
+	padding: 5px;
+	background-color: #efefef;
+	border: 1px solid #ccc;
+}
+.save-section #filename {
+	flex-grow: 1;
+}
+
+.step {
+	background-color: #efefef;
+	border: 1px solid #ccc;
+	padding: 5px;
+	margin-bottom: 15px;
+}
+
+.step .function {
+	box-sizing: border-box;
+}
+
+.step .step-top {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: flex-start;
+	align-items: center;
+}
