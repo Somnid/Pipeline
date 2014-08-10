@@ -64,20 +64,25 @@ button, select {
 	flex-grow: 1;
 }
 
-.step {
+step-view {
 	background-color: #efefef;
 	border: 1px solid #ccc;
 	padding: 5px;
 	margin-bottom: 15px;
 }
 
-.step .function {
+step-view::shadow .function {
 	box-sizing: border-box;
+	display: block;
 }
 
-.step .step-top {
+step-view::shadow .step-top {
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: flex-start;
 	align-items: center;
+}
+
+step-view::shadow .step-bottom label {
+	display: block;
 }

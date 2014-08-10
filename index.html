@@ -28,25 +28,26 @@
 		<script src="js/lib/saved-field.js"></script>
 		<script src="js/lib/drop-field.js"></script>
 		<script src="js/lib/data-transform.js"></script>
+		<script src="js/lib/tmpl.js"></script>
 		<script src="js/views/step-view.js"></script>
 		<script src="js/views/pipeline-app.js"></script>
 		<script src="js/index.js"></script>
 		<template id="step-tmpl">
-			<li class="step">
-				<div class="step-top">
-					<label>Transform</label>
-					<select class="transform-select">
-						<option value="select">Select</option>
-						<option value="where">Where</option>
-						<option value="print">Print</option>
-						<option value="hash">Hash</option>
-						<option value="count">Count</option>
-						<option value="distinct">Distinct</option>
-					</select>
-				</div>
-				<label>Function Body (item, index)</label>
-				<textarea class="function"></textarea>
-			</li>
+			<div class="step-top">
+				<label>Transform</label>
+				<select class="transform-select">
+					<option value="select">Select</option>
+					<option value="where">Where</option>
+					<option value="print">Print</option>
+					<option value="hash">Hash</option>
+					<option value="count">Count</option>
+					<option value="distinct">Distinct</option>
+				</select>
+			</div>
+			<div class="step-bottom">
+			  <label>Function Body (item, index)</label>
+			  <textarea class="function"></textarea>
+			</div>
 		</template>
 	</body>
 </html>

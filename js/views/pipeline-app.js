@@ -6,10 +6,10 @@ var PipelineApp = (function(){
 		pipelineApp.model = {};
 		bind(pipelineApp);
 		pipelineApp.init();
-		
+
 		return pipelineApp;
 	}
-	
+
 	function bind(pipelineApp){
 		pipelineApp.init = init.bind(pipelineApp);
 		pipelineApp.gatherSelectors = gatherSelectors.bind(pipelineApp);
@@ -18,18 +18,18 @@ var PipelineApp = (function(){
 		pipelineApp.addStep = addStep.bind(pipelineApp);
 		pipelineApp.transform = transform.bind(pipelineApp);
 	}
-	
+
 	function init(){
 		this.gatherSelectors();
 		this.attachEvents();
 		this.setupModel();
 	}
-	
+
 	function setupModel(){
 		this.model.steps = [];
 		this.model.stepCounter = 0;
 	}
-	
+
 	function gatherSelectors(){
 		this.dom.addStep = document.getElementById("add-step");
 		this.dom.transform = document.getElementById("transform");
@@ -39,26 +39,24 @@ var PipelineApp = (function(){
 		this.dom.output = document.getElementById("output");
 		this.dom.typeSelect = document.getElementById("type-select");
 	}
-	
+
 	function attachEvents(){
 		this.dom.addStep.addEventListener("click", this.addStep);
 		this.dom.transform.addEventListener("click", this.transform);
 	}
-	
+
 	function addStep(){
-		var stepFrag = document.importNode(this.dom.stepTmpl.content, true);
-		this.model.steps.push(StepView.create({
-			el : stepFrag.querySelector("li"),
-			id : this.model.stepCounter
-		}));
-		this.dom.steps.appendChild(stepFrag);
+		var stepView = document.createElement("step-view");
+		stepView.step = this.model.stepCounter;
+		this.model.steps.push(stepView);
+		this.dom.steps.appendChild(stepView);
 		this.model.stepCounter++;
 	}
-	
+
 	function transform(){
 		var value = this.dom.input.value;
 		var type = this.dom.typeSelect.value;
-		
+
 		for(var step in this.model.steps){
 			out = step.transform(value, type);
 			type = out.type;
