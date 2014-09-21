@@ -57,8 +57,8 @@ var PipelineApp = (function(){
 		var value = this.dom.input.value;
 		var type = this.dom.typeSelect.value;
 
-		for(var step in this.model.steps){
-			out = step.transform(value, type);
+		for(var i = 0; i < this.model.steps.length; i++){
+			out = this.model.steps[i].transform(value, type);
 			type = out.type;
 			value = out.value;
 		}

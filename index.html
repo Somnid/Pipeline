@@ -2,8 +2,9 @@
 <html>
 	<head>
 		<title>Pipeline</title>
-		<link rel="stylesheet" href="css/index.css"></script>
+		<link rel="stylesheet" href="css/index.css" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+		<link rel="import" href="html/web-components/step-view.html" />
 	</head>
 	<body>
 		<div class="input-section">
@@ -29,25 +30,7 @@
 		<script src="js/lib/drop-field.js"></script>
 		<script src="js/lib/data-transform.js"></script>
 		<script src="js/lib/tmpl.js"></script>
-		<script src="js/views/step-view.js"></script>
 		<script src="js/views/pipeline-app.js"></script>
 		<script src="js/index.js"></script>
-		<template id="step-tmpl">
-			<div class="step-top">
-				<label>Transform</label>
-				<select class="transform-select">
-					<option value="select">Select</option>
-					<option value="where">Where</option>
-					<option value="print">Print</option>
-					<option value="hash">Hash</option>
-					<option value="count">Count</option>
-					<option value="distinct">Distinct</option>
-				</select>
-			</div>
-			<div class="step-bottom">
-			  <label>Function Body (item, index)</label>
-			  <textarea class="function"></textarea>
-			</div>
-		</template>
 	</body>
 </html>

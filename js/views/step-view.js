@@ -1,5 +1,6 @@
 var stepProto = Object.create(HTMLElement.prototype);
 
+stepProto.ownerDoc = document.currentScript.ownerDocument;
 stepProto.createdCallback = function(){
   StepView.create(this);
 };
@@ -30,7 +31,7 @@ var StepView = (function(){
 	}
 
 	function renderShadow(){
-	  var template = document.getElementById("step-tmpl");
+	  var template = this.ownerDoc.getElementById("step-tmpl");
     var tmpl = Tmpl.tmpl(template, { }, this);
     this.dom.shadowRoot = this.createShadowRoot();
     this.dom.shadowRoot.appendChild(tmpl);
