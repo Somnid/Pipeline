@@ -1,7 +1,7 @@
 body {
 	font-family: arial;
 	display: flex;
-	flex-flow: column nowrap;
+	flex-flow: row nowrap;
 	justify-content: flex-start;
 	align-items: stretch;
 }
@@ -91,4 +91,21 @@ step-view::shadow .step-top {
 
 step-view::shadow .step-bottom label {
 	display: block;
+}
+
+#transformer-view {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: stretch;
+  flex-grow: 1;
+}
+#flow-view {
+  flex-basis : 150px;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: stretch;
+  border: 1px solid #ccc;
+  margin-left: 15px;
 }

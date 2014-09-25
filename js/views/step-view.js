@@ -45,7 +45,7 @@ var StepView = (function(){
 	function transform(input, type){
 		var transformName = this.dom.select.value;
 		var func = this.dom.func.value;
-		Transform.doTransform(transformName, input, func, type);
+		return Transform.doTransform(transformName, input, func, type);
 	}
 
 	return {

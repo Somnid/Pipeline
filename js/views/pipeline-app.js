@@ -62,7 +62,7 @@ var PipelineApp = (function(){
 			type = out.type;
 			value = out.value;
 		}
-		this.dom.output = value;
+		this.dom.output.value = value;
 	}
 
 	return {

@@ -6,15 +6,15 @@ var Transform = (function(){
 		var result = transforms[transformName](array, func);
 		return {
 			value : result,
-			type : transformType[transformName]
+			type : format
 		};
 	}
-	
+
 	var inputParser = {
 		json : parseAsJson,
 		text : parseAsTextLines
 	};
-	
+
 	function inputToArray(input, format){
 		try{
 			return inputParser[format](input);
@@ -22,11 +22,11 @@ var Transform = (function(){
 			console.error("unknown data type");
 		}
 	}
-	
+
 	function parseAsJson(input){
 		return JSON.parse(input);
 	}
-	
+
 	function parseAsTextLines(input){
 		return input.split("\n");
 	}
@@ -92,19 +92,9 @@ var Transform = (function(){
 			return result;
 		}
 	};
-	
-	var transformTypes = {
-		select : "json",
-		where : "json",
-		print : "text",
-		count : "text",
-		hash : "json",
-		distinct : "json",
-		reject : "json"
-	};
 
 	return {
 		doTransform : doTransform
 	};
 
-})(); 
+})();
