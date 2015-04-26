@@ -12,7 +12,7 @@ document.registerElement("flow-view", {
 var FlowView = (function(){
 
 	function create(flowView){
-		flowView.dom = {}
+		flowView.dom = {};
 		bind(floView);
 		flowView.init();
 		return flowView;

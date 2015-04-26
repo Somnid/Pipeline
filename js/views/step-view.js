@@ -12,7 +12,7 @@ document.registerElement("step-view", {
 var StepView = (function(){
 
 	function create(stepView){
-		stepView.dom = {}
+		stepView.dom = {};
 		bind(stepView);
 		stepView.init();
 		return stepView;

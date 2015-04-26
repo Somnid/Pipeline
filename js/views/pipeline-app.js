@@ -56,13 +56,17 @@ var PipelineApp = (function(){
 	function transform(){
 		var value = this.dom.input.value;
 		var type = this.dom.typeSelect.value;
-
-		for(var i = 0; i < this.model.steps.length; i++){
-			out = this.model.steps[i].transform(value, type);
-			type = out.type;
-			value = out.value;
-		}
-		this.dom.output.value = value;
+		
+		var promise = type == "html" ? Ajax.promiseRequest({ url : value }) : Util.promiseStub();
+		
+		promise.then(function(){
+  		for(var i = 0; i < this.model.steps.length; i++){
+  			out = this.model.steps[i].transform(value, type);
+  			type = out.type;
+  			value = out.value;
+  		}
+  		this.dom.output.value = value;
+		}.bind(this));
 	}
 
 	return {

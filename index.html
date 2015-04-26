@@ -9,11 +9,14 @@
 	<body>
 	  <div id="transformer-view">
       <div class="input-section">
-			  <select id="type-select">
-				  <option value="text">Text</option>
-				  <option value="json">Json</option>
-			  </select>
-			<textarea id="input"></textarea>
+        <div>
+  			  <select id="type-select">
+  				  <option value="text">Text</option>
+  				  <option value="json">Json</option>
+  				  <option value="html">Html</option>
+  			  </select>
+			    <textarea id="input"></textarea>
+			  </div>
 		  </div>
 		  <ul id="steps"></ul>
 		  <div class="button-section">
@@ -31,6 +34,7 @@
 	  <div id="flow-view">
 
 	  </div>
+	  <script src="js/utilities.js"></script>
 		<script src="js/lib/saved-field.js"></script>
 		<script src="js/lib/drop-field.js"></script>
 		<script src="js/lib/data-transform.js"></script>
