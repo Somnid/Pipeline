@@ -1,8 +1,13 @@
 var Datafy = (function(){
+  function htmlString(htmlString, extractionGuide){
+	parser = new DOMParser();
+	doc = parser.parseFromString(htmlString, "text/html");
+	return html(doc, extractionGuide);
+  }
   function html(html, extractionGuide){
     var data = {};
     for(var key in extractionGuide){
-      data[key] = extractValue(html, extractionGuid[key]);
+      data[key] = extractValueOrArray(html, extractionGuide[key]);
     }
     return data;
   }
@@ -41,6 +46,7 @@ var Datafy = (function(){
   }
   return {
     html : html,
+	htmlString : htmlString,
 	_extractValueOrArray : extractValueOrArray
   };
 })();

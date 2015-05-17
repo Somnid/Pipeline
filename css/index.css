@@ -109,3 +109,6 @@ step-view::shadow .step-bottom label {
   border: 1px solid #ccc;
   margin-left: 15px;
 }
+#save-flow {
+	margin-top: auto;
+}
