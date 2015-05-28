@@ -15,7 +15,6 @@ var StepView = (function(){
 	function bind(stepView){
 		stepView.init = init.bind(stepView);
 		stepView.gatherSelectors = gatherSelectors.bind(stepView);
-		stepView.transform = transform.bind(stepView);
 		stepView.renderDom = renderDom.bind(stepView);
 		stepView.toData = toData.bind(stepView);
 		stepView.setupModel = setupModel.bind(stepView);
@@ -64,12 +63,6 @@ var StepView = (function(){
 			}
 			return false;
 		}
-	}
-
-	function transform(input, type){
-		var transformName = this.dom.select.value;
-		var func = this.dom.func.value;
-		return Transform.doTransform(transformName, input, func, type);
 	}
 	
 	function toData(){

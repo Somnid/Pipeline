@@ -25,6 +25,7 @@
 				<button id="clear">Clear</button>
 			</div>
 			<div class="output-section">
+				<div id="output-error" class="error"></div>
 				<textarea id="output"></textarea>
 			</div>
 			<div class="save-section">
@@ -36,6 +37,7 @@
 			<ul id="flow-steps">
 			</ul>
 			<button id="save-flow">Save</button>
+			<button id="download-flow">Download</button>
 		</div>
 		<script src="js/utilities.js"></script>
 		<script src="js/lib/object-storage.js"></script>
@@ -46,6 +48,8 @@
 		<script src="js/lib/data-transform.js"></script>
 		<script src="js/lib/tmpl.js"></script>
 		<script src="js/views/status-bar-view.js"></script>
+		
+		<script src="js/services/process-runner.js"></script>
 		
 		<script src="js/views/flow-view.js"></script>
 		<script src="js/views/pipeline-app.js"></script>
@@ -63,6 +67,7 @@
 					<option value="hash">Hash</option>
 					<option value="count">Count</option>
 					<option value="distinct">Distinct</option>
+					<option value="unpivot">Unpivot</option>
 					<option value="extractHtml">Extract HTML</option>
 				</select>
 			</div>

@@ -92,6 +92,16 @@ step-view::shadow .step-top {
 step-view::shadow .step-bottom label {
 	display: block;
 }
+.error {
+	border: 1px solid #cc0000;
+	color: #cc0000;
+	background-color: #FFDBDB;
+	font-weight: bold;
+	box-sizing: border-box;
+	display: none;
+	margin: 8px 0px;
+	padding: 8px;
+}
 
 #transformer-view {
   display: flex;

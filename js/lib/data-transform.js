@@ -17,6 +17,12 @@ var Transform = (function(){
 				value : result,
 				type : transformType.returnType
 			};
+		}else{
+			var result = transformType.func(input);
+			return {
+				value : result,
+				type : transformType.returnType
+			};
 		}
 	}
 
@@ -29,11 +35,14 @@ var Transform = (function(){
 		try{
 			return inputParser[format](input);
 		}catch(e){
-			console.error("unknown data type");
+			console.error("unknown data type", format, input);
 		}
 	}
 
 	function parseAsJson(input){
+		if(typeof(input) == "object"){
+			return input;
+		}
 		return JSON.parse(input);
 	}
 
@@ -132,6 +141,28 @@ var Transform = (function(){
 		extractHtml : {
 			func : Datafy.htmlString,
 			bodyType : "json",
+			returnType : "json"
+		},
+		unpivot : {
+			func : function(pivotObject){
+				var maxLength = 0;
+				
+				for(var key in pivotObject){
+					maxLength = Math.max(pivotObject[key].length, maxLength);
+				}
+				
+				var unpivots = [];
+				for(var i = 0; i < maxLength; i++){
+					var unpivot = {};
+					for(var key in pivotObject){
+						if(pivotObject[key][i]){
+							unpivot[key] = pivotObject[key][i]
+						}
+					}
+					unpivots.push(unpivot);
+				}
+				return unpivots;
+			},
 			returnType : "json"
 		}
 	};

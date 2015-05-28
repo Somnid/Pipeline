@@ -46,6 +46,18 @@ var Util = (function(){
 			element.setSelectionRange(newIndex, newIndex);
 		}
 	}
+
+	function download(url, fileName){
+    	var link = document.createElement("a");
+    	link.href = url;
+    	link.download = fileName;
+    	link.click();
+  	}
+
+  	function stringToFileUrl(text){
+    	var file = new Blob([text], {type:'text/plain'});
+		return URL.createObjectURL(file);
+  	}
 	
 	function arraySelect(array, selectorFunction){
 		var selectionArray = [];
@@ -60,6 +72,8 @@ var Util = (function(){
 	  isPlainObject : isPlainObject,
 	  extend : extend,
 	  insertAtCursor : insertAtCursor,
+	  download : download,
+	  stringToFileUrl : stringToFileUrl,
 	  arraySelect : arraySelect
 	};
 

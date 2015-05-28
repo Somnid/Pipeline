@@ -20,6 +20,8 @@ var PipelineApp = (function(){
 		pipelineApp.loadData = loadData.bind(pipelineApp);
 		pipelineApp.save = save.bind(pipelineApp);
 		pipelineApp.clear = clear.bind(pipelineApp);
+		pipelineApp.downloadFlow = downloadFlow.bind(pipelineApp);
+		pipelineApp.outputError = outputError.bind(pipelineApp);
 	}
 
 	function init(){
@@ -49,7 +51,9 @@ var PipelineApp = (function(){
 		this.dom.statusBar = document.getElementById("status-bar");
 		this.dom.flowView = document.getElementById("flow-view");
 		this.dom.save = document.getElementById("save-flow");
+		this.dom.downloadFlow = document.getElementById("download-flow");
 		this.dom.clear = document.getElementById("clear");
+		this.dom.outputError = document.getElementById("output-error");
 	}
 
 	function attachEvents(){
@@ -57,6 +61,7 @@ var PipelineApp = (function(){
 		this.dom.transform.addEventListener("click", this.transform);
 		this.dom.save.addEventListener("click", this.save);
 		this.dom.clear.addEventListener("click", this.clear);
+		this.dom.downloadFlow.addEventListener("click", this.downloadFlow);
 	}
 	
 	function attachSubviews(){
@@ -80,25 +85,31 @@ var PipelineApp = (function(){
 	}
 
 	function transform(){
-		var value = this.dom.input.value;
-		var type = this.dom.typeSelect.value;
+		this.dom.outputError.style.display = "none";
+		var data = {
+			inputType : this.dom.typeSelect.value,
+			input : this.dom.input.value,
+			steps : Util.arraySelect(this.model.steps, function(step){
+				return step.toData();
+			})
+		};
 		
-		var promise = type == "html" ? Cjax.request({ url : value }) : Util.promiseStub();
-		
-		promise.then(function(value){
-			for(var i = 0; i < this.model.steps.length; i++){
-				out = this.model.steps[i].transform(value, type);
-				type = out.type;
-				value = out.value;
+		ProcessRunner.runProcess(data)
+		.then(function(result){
+			if(result.type == "text"){
+				this.dom.output.value = result.value;
+			}else if(result.type == "json"){
+				this.dom.output.value = JSON.stringify(result.value);
 			}
-			if(type == "text"){
-				this.dom.output.value = value;
-			}else if(type == "json"){
-				this.dom.output.value = JSON.stringify(value);
-			}
-		}.bind(this));
+		}.bind(this))
+		.catch(this.outputError);
 	}
 	
+	function outputError(error){
+		this.dom.outputError.style.display = "block";
+		this.dom.outputError.textContent = error;
+	}
+
 	function save(){
 		var data = {
 			inputType : this.dom.typeSelect.value,
@@ -126,6 +137,19 @@ var PipelineApp = (function(){
 		DomTools.removeChildren(this.dom.steps);
 		this.model.steps = [];
 		this.dom.input.value = "";
+	}
+
+	function downloadFlow(){
+		var data = {
+			inputType : this.dom.typeSelect.value,
+			input : this.dom.input.value,
+			steps : Util.arraySelect(this.model.steps, function(step){
+				return step.toData();
+			})
+		};
+		var saveString = JSON.stringify(data);
+		var objectUrl = Util.stringToFileUrl(saveString);
+		Util.download(objectUrl, "flow.json");
 	}
 
 	return {
