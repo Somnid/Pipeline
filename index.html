@@ -11,9 +11,10 @@
 			<div class="input-section">
 				<div>
 					<select id="type-select">
-						<option value="text">Text</option>
-						<option value="json">Json</option>
-						<option value="html">Html</option>
+						<option value="text">TEXT</option>
+						<option value="json">JSON</option>
+						<option value="csv">CSV</option>
+						<option value="tsv">TSV</option>
 					</select>
 					<textarea id="input"></textarea>
 				</div>
@@ -42,19 +43,22 @@
 		<script src="js/utilities.js"></script>
 		<script src="js/lib/object-storage.js"></script>
 		<script src="js/lib/dom-tools.js"></script>
+		<script src="js/lib/data-tools.js"></script>
 		<script src="js/lib/saved-field.js"></script>
 		<script src="js/lib/drop-field.js"></script>
 		<script src="js/lib/datafy.js"></script>
 		<script src="js/lib/data-transform.js"></script>
 		<script src="js/lib/tmpl.js"></script>
 		<script src="js/views/status-bar-view.js"></script>
-		
+
+		<script src="js/services/input-parser-service.js"></script>
+		<script src="js/services/data-transform-service.js"></script>
 		<script src="js/services/process-runner.js"></script>
-		
+
 		<script src="js/views/flow-view.js"></script>
 		<script src="js/views/pipeline-app.js"></script>
 		<script src="js/index.js"></script>
-		
+
 		<!-- step view -->
 		<template id="step-tmpl">
 			<div class="step">
@@ -68,7 +72,9 @@
 					<option value="count">Count</option>
 					<option value="distinct">Distinct</option>
 					<option value="unpivot">Unpivot</option>
+					<option value="httpRequest">Http Request</option>
 					<option value="extractHtml">Extract HTML</option>
+					<option value="toText">To Text</option>
 				</select>
 			</div>
 			<div class="step-bottom">
@@ -78,6 +84,6 @@
 			</div>
 		</template>
 		<script src="js/views/step-view.js"></script>
-		
+
 	</body>
 </html>

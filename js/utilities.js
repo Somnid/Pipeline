@@ -1,11 +1,11 @@
 var Util = (function(){
 
-	function promiseStub(){
+	function promiseStub(value){
 		return new Promise(function(resolve, reject){
-			resolve();
+			resolve(value);
 		});
 	}
-	
+
 	function isPlainObject(value){
 		if(typeof(value) !== "object" || value === null){
 			return false;
@@ -19,7 +19,7 @@ var Util = (function(){
 
 		return true;
 	}
-	
+
 	function extend() {
 		var target = arguments[0] || {};
 		var sources = Array.prototype.slice.call(arguments, 1);
@@ -35,7 +35,7 @@ var Util = (function(){
 		}
 		return target;
 	}
-	
+
 	 function insertAtCursor(element, value){
 		if(element.tagName == "TEXTAREA"){
 			var startPosition = element.selectionStart;
@@ -58,7 +58,7 @@ var Util = (function(){
     	var file = new Blob([text], {type:'text/plain'});
 		return URL.createObjectURL(file);
   	}
-	
+
 	function arraySelect(array, selectorFunction){
 		var selectionArray = [];
 		for(var i = 0; i < array.length; i++){
@@ -66,7 +66,20 @@ var Util = (function(){
 		}
 		return selectionArray;
 	}
-	
+
+	function readAsJson(file){
+		return new Promise(function(resolve, reject){
+				var reader = new FileReader();
+				reader.onload = function(e){
+					resolve(JSON.parse(e.target.result));
+				};
+				reader.onerror = function(e){
+					reject(e);
+				};
+				reader.readAsText(file);
+		});
+	}
+
 	return {
 	  promiseStub : promiseStub,
 	  isPlainObject : isPlainObject,
@@ -74,7 +87,8 @@ var Util = (function(){
 	  insertAtCursor : insertAtCursor,
 	  download : download,
 	  stringToFileUrl : stringToFileUrl,
-	  arraySelect : arraySelect
+	  arraySelect : arraySelect,
+		readAsJson : readAsJson
 	};
 
 })();

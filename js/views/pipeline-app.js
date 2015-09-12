@@ -18,10 +18,12 @@ var PipelineApp = (function(){
 		pipelineApp.transform = transform.bind(pipelineApp);
 		pipelineApp.attachSubviews = attachSubviews.bind(pipelineApp);
 		pipelineApp.loadData = loadData.bind(pipelineApp);
+		pipelineApp.loadFlow = loadFlow.bind(pipelineApp);
 		pipelineApp.save = save.bind(pipelineApp);
 		pipelineApp.clear = clear.bind(pipelineApp);
 		pipelineApp.downloadFlow = downloadFlow.bind(pipelineApp);
 		pipelineApp.outputError = outputError.bind(pipelineApp);
+		pipelineApp.dragover = dragover.bind(pipelineApp);
 	}
 
 	function init(){
@@ -29,7 +31,7 @@ var PipelineApp = (function(){
 		this.attachEvents();
 		this.setupModel();
 		this.attachSubviews();
-		
+
 		this.loadData(ObjectStorage.get("last-data"));
 	}
 
@@ -62,8 +64,10 @@ var PipelineApp = (function(){
 		this.dom.save.addEventListener("click", this.save);
 		this.dom.clear.addEventListener("click", this.clear);
 		this.dom.downloadFlow.addEventListener("click", this.downloadFlow);
+		this.dom.flowView.addEventListener("dragover", this.dragover);
+		this.dom.flowView.addEventListener("drop", this.loadFlow);
 	}
-	
+
 	function attachSubviews(){
 		this.subviews = {};
 		this.subviews.statusBar = StatusBar.create({
@@ -93,7 +97,7 @@ var PipelineApp = (function(){
 				return step.toData();
 			})
 		};
-		
+
 		ProcessRunner.runProcess(data)
 		.then(function(result){
 			if(result.type == "text"){
@@ -104,7 +108,7 @@ var PipelineApp = (function(){
 		}.bind(this))
 		.catch(this.outputError);
 	}
-	
+
 	function outputError(error){
 		this.dom.outputError.style.display = "block";
 		this.dom.outputError.textContent = error;
@@ -118,10 +122,10 @@ var PipelineApp = (function(){
 				return step.toData();
 			})
 		};
-		
+
 		ObjectStorage.set("last-data", data);
 	}
-	
+
 	function loadData(data){
 		if(!data){
 			return;
@@ -132,7 +136,7 @@ var PipelineApp = (function(){
 			this.addStep(data.steps[i]);
 		}
 	}
-	
+
 	function clear(){
 		DomTools.removeChildren(this.dom.steps);
 		this.model.steps = [];
@@ -150,6 +154,24 @@ var PipelineApp = (function(){
 		var saveString = JSON.stringify(data);
 		var objectUrl = Util.stringToFileUrl(saveString);
 		Util.download(objectUrl, "flow.json");
+	}
+
+	function dragover(e){
+		e.preventDefault();
+		this.dom.flowView.classList.add("file-over");
+	}
+	function dragleave(e){
+		e.preventDefault();
+		this.dom.flowView.classList.remove("file-over");
+	}
+	function loadFlow(e){
+		e.preventDefault();
+		Util.readAsJson(e.dataTransfer.files[0])
+			.then(json => {
+				this.clear();
+				this.loadData(json);
+			});
+		this.dom.flowView.classList.remove("file-over");
 	}
 
 	return {
