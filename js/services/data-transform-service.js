@@ -27,7 +27,7 @@ var DataTransformService = (function(){
 			}else if(transformType.bodyType == "json"){
 			  resolve(this.transformWithJsonBodyType(input, transformType, transformBody));
 			}else{
-				resolve(this.transformWithOtherBodyType(input, transformType));
+				resolve(this.transformWithOtherBodyType(input, transformType, format));
 			}
 		});
 	}
@@ -36,7 +36,7 @@ var DataTransformService = (function(){
 		return new Promise((resolve, reject) => {
 			var func = new Function("item", "index", functionBody);
 			var array = this.options.inputParserService.inputToArray(input, format);
-			transformType.func(input, func)
+			transformType.func(array, func)
 				.then(result => {
 					resolve({
 						value : result,
@@ -59,9 +59,10 @@ var DataTransformService = (function(){
 		});
 	}
 
-	function transformWithOtherBodyType(input, transformType){
+	function transformWithOtherBodyType(input, transformType, format){
 		return new Promise((resolve, reject) => {
-			transformType.func(input)
+			var array = this.options.inputParserService.inputToArray(input, format);
+			transformType.func(array)
 				.then(result => {
 					resolve({
 						value : result,

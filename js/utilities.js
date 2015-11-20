@@ -69,26 +69,41 @@ var Util = (function(){
 
 	function readAsJson(file){
 		return new Promise(function(resolve, reject){
-				var reader = new FileReader();
-				reader.onload = function(e){
-					resolve(JSON.parse(e.target.result));
-				};
-				reader.onerror = function(e){
-					reject(e);
-				};
-				reader.readAsText(file);
+			var reader = new FileReader();
+			reader.onload = function(e){
+				resolve(JSON.parse(e.target.result));
+			};
+			reader.onerror = function(e){
+				reject(e);
+			};
+			reader.readAsText(file);
 		});
+	}
+	
+	function copy(){
+		var hasSelection = document.queryCommandEnabled('copy');
+		if(!hasSelection){
+			console.log('copy not enabled');
+		}
+		this.select();
+
+		try {
+			var successful = document.execCommand('copy');
+		} catch(err) {
+			console.log('execCommand Error', err);
+		}
 	}
 
 	return {
-	  promiseStub : promiseStub,
-	  isPlainObject : isPlainObject,
-	  extend : extend,
-	  insertAtCursor : insertAtCursor,
-	  download : download,
-	  stringToFileUrl : stringToFileUrl,
-	  arraySelect : arraySelect,
-		readAsJson : readAsJson
+		promiseStub : promiseStub,
+		isPlainObject : isPlainObject,
+		extend : extend,
+		insertAtCursor : insertAtCursor,
+		download : download,
+		stringToFileUrl : stringToFileUrl,
+		arraySelect : arraySelect,
+		readAsJson : readAsJson,
+		copy : copy
 	};
 
 })();

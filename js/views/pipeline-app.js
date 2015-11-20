@@ -11,7 +11,11 @@ var PipelineApp = (function(){
 
 	function bind(pipelineApp){
 		pipelineApp.init = init.bind(pipelineApp);
+		pipelineApp.installServiceWorker = installServiceWorker.bind(pipelineApp);
+		pipelineApp.serviceWorkerInstalled = serviceWorkerInstalled.bind(pipelineApp);
+		pipelineApp.serviceWorkerInstallFailed = serviceWorkerInstallFailed.bind(pipelineApp);
 		pipelineApp.gatherSelectors = gatherSelectors.bind(pipelineApp);
+		pipelineApp.templateDom = templateDom.bind(pipelineApp);
 		pipelineApp.setupModel = setupModel.bind(pipelineApp);
 		pipelineApp.attachEvents = attachEvents.bind(pipelineApp);
 		pipelineApp.addStep = addStep.bind(pipelineApp);
@@ -24,15 +28,34 @@ var PipelineApp = (function(){
 		pipelineApp.downloadFlow = downloadFlow.bind(pipelineApp);
 		pipelineApp.outputError = outputError.bind(pipelineApp);
 		pipelineApp.dragover = dragover.bind(pipelineApp);
+		pipelineApp.tabHandler = tabHandler.bind(pipelineApp);
 	}
 
 	function init(){
+		this.installServiceWorker();
 		this.gatherSelectors();
 		this.attachEvents();
 		this.setupModel();
+		this.templateDom();
 		this.attachSubviews();
 
 		this.loadData(ObjectStorage.get("last-data"));
+	}
+
+	function installServiceWorker(){
+		if("serviceWorker" in navigator){
+			navigator.serviceWorker.register("service-worker.js", {scope: "./"})
+				.then(this.serviceWorkerInstalled)
+				.catch(this.serviceWorkerInstallFailed);
+		}
+	}
+
+	function serviceWorkerInstalled(registration){
+		console.log("App Service registration successful with scope:", registration.scope);
+	}
+
+	function serviceWorkerInstallFailed(error){
+		console.error("App Service failed to install", error);
 	}
 
 	function setupModel(){
@@ -40,6 +63,12 @@ var PipelineApp = (function(){
 			steps : [],
 			stepCounter : 0
 		};
+	}
+
+	function templateDom(){
+		var selectTransform = document.querySelector("#step-tmpl").content.querySelector(".transform-select");
+		var optionList = DomTools.createOptionsList(Object.keys(Transform))
+		selectTransform.appendChild(optionList);
 	}
 
 	function gatherSelectors(){
@@ -56,6 +85,7 @@ var PipelineApp = (function(){
 		this.dom.downloadFlow = document.getElementById("download-flow");
 		this.dom.clear = document.getElementById("clear");
 		this.dom.outputError = document.getElementById("output-error");
+		this.dom.copy = document.getElementById("copy");
 	}
 
 	function attachEvents(){
@@ -66,6 +96,8 @@ var PipelineApp = (function(){
 		this.dom.downloadFlow.addEventListener("click", this.downloadFlow);
 		this.dom.flowView.addEventListener("dragover", this.dragover);
 		this.dom.flowView.addEventListener("drop", this.loadFlow);
+		this.dom.input.addEventListener("keydown", this.tabHandler);
+		this.dom.copy.addEventListener("click", Util.copy.bind(this.dom.output));
 	}
 
 	function attachSubviews(){
@@ -75,8 +107,19 @@ var PipelineApp = (function(){
 		});
 		this.subviews.flowView = FlowView.create({
 			root : this.dom.flowView,
-			piplineApp : this
+			pipelineApp : this
 		});
+	}
+
+	function tabHandler(e){
+		var TABKEY = 9;
+		if(e.keyCode == TABKEY) {
+			Util.insertAtCursor(e.target, "\t");
+			if(e.preventDefault) {
+				e.preventDefault();
+			}
+			return false;
+		}
 	}
 
 	function addStep(step){
@@ -84,7 +127,7 @@ var PipelineApp = (function(){
 			model : step
 		});
 		this.model.steps.push(stepView);
-		this.dom.steps.appendChild(stepView.dom.root);
+		stepView.appendTo(this.dom.steps);
 		this.model.stepCounter++;
 	}
 
@@ -99,14 +142,14 @@ var PipelineApp = (function(){
 		};
 
 		ProcessRunner.runProcess(data)
-		.then(function(result){
-			if(result.type == "text"){
-				this.dom.output.value = result.value;
-			}else if(result.type == "json"){
-				this.dom.output.value = JSON.stringify(result.value);
-			}
-		}.bind(this))
-		.catch(this.outputError);
+			.then(result => {
+				if(result.type == "text"){
+					this.dom.output.value = result.value;
+				}else if(result.type == "json"){
+					this.dom.output.value = JSON.stringify(result.value);
+				}
+			})
+			.catch(this.outputError);
 	}
 
 	function outputError(error){

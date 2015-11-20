@@ -3,6 +3,7 @@
 	<head>
 		<title>Pipeline</title>
 		<link rel="stylesheet" href="css/index.css" />
+		<link rel="manifest" href="/manifest.json" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 	</head>
 	<body>
@@ -23,6 +24,7 @@
 			<div class="button-section">
 				<button id="transform">Transform</button>
 				<button id="add-step">Add Step</button>
+				<button id="copy" class="copy"></button>
 				<button id="clear">Clear</button>
 			</div>
 			<div class="output-section">
@@ -31,15 +33,18 @@
 			</div>
 			<div class="save-section">
 				<input type="text" id="filename" placeholder="output.dat" />
-				<button id="save">Save</button>
+				<button id="save" class="download"></button>
 			</div>
 		</div>
-		<div id="flow-view">
+		<div id="flow-view" class="stack-stretch">
 			<ul id="flow-steps">
 			</ul>
-			<button id="save-flow">Save</button>
-			<button id="download-flow">Download</button>
+			<div class="row">
+				<button id="save-flow" class="save"></button>
+				<button id="download-flow" class="download"></button>
+			</div>
 		</div>
+		
 		<script src="js/utilities.js"></script>
 		<script src="js/lib/object-storage.js"></script>
 		<script src="js/lib/dom-tools.js"></script>
@@ -62,26 +67,23 @@
 		<!-- step view -->
 		<template id="step-tmpl">
 			<div class="step">
-			<div class="step-top">
-				<label>Transform</label>
-				<select class="transform-select">
-					<option value="select">Select</option>
-					<option value="where">Where</option>
-					<option value="print">Print</option>
-					<option value="hash">Hash</option>
-					<option value="count">Count</option>
-					<option value="distinct">Distinct</option>
-					<option value="unpivot">Unpivot</option>
-					<option value="httpRequest">Http Request</option>
-					<option value="extractHtml">Extract HTML</option>
-					<option value="toText">To Text</option>
-				</select>
+				<div class="step-top">
+					<label>Transform</label>
+					<select class="transform-select"></select>
+					<button class="remove"></button>
+				</div>
+				<div class="step-bottom">
+					<label>Function Body (item, index)</label>
+					<textarea class="function"></textarea>
+				</div>
 			</div>
-			<div class="step-bottom">
-				<label>Function Body (item, index)</label>
-				<textarea class="function"></textarea>
-			</div>
-			</div>
+		</template>
+
+		<!-- flow step view -->
+		<template id="flow-step-tmpl">
+			<li class="flow-step">
+				<span class="type"></span>
+			</li>
 		</template>
 		<script src="js/views/step-view.js"></script>
 

@@ -1,0 +1,13 @@
+{
+	"short_name" : "Pipeline",
+	"name" : "Pipeline",
+	"icons" : [
+		{
+			"src": "/img/logo.png",
+			"sizes": "96x96",
+			"type": "image/png"
+		}
+	],
+	"start_url" : "/index.html",
+	"display" : "portrait"
+}

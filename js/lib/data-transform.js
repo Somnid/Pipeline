@@ -142,7 +142,7 @@ var Transform = (function(){
 					for(var i = 0; i < array.length; i++){
 						result += textFunc(array[i]);
 					}
-					return result;
+					resolve(result);
 				});
 			},
 			bodyType : "function",
@@ -156,6 +156,30 @@ var Transform = (function(){
 				return Cjax.request({ url : url });
 			},
 			returnType : "html"
+		},
+		//abstract
+		toSqlInsert : {
+			func : function(array){
+				return new Promise((resolve, reject) => {
+					var statement = "INSERT INTO\nVALUES\n";
+					array.forEach(x => {
+						statement += "(";
+						for(var key in x){
+							if(/^[0-9]+$/i.test(x[key])){
+								statement += `${x[key]}, `;
+							}else{
+								var value = x[key].replace(/\'/, "''");
+								statement += `'${value}', `;
+							}
+						}
+						statement = statement.substring(0, statement.length - 2);
+						statement += "),\n";
+					});
+					statement = statement.substring(0, statement.length - 2);
+					resolve(statement);
+				});
+			},
+			returnType : "text"
 		}
 	};
 
